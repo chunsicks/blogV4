@@ -1,10 +1,13 @@
 package org.example.springv3.user;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import lombok.RequiredArgsConstructor;
 import org.example.springv3.core.error.ex.Exception401;
 import org.example.springv3.core.error.ex.Exception400;
 import org.example.springv3.core.error.ex.Exception404;
 import org.example.springv3.core.error.ex.Exception500;
+import org.example.springv3.core.util.JwtUtil;
 import org.example.springv3.core.util.MyFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+
+import java.sql.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,10 +38,13 @@ public class UserService {
         userPS.setProfile(imageFileName);
     } // 더티체킹 update됨
 
-    public User 로그인(UserRequest.LoginDTO loginDTO) {
+    public String 로그인(UserRequest.LoginDTO loginDTO) {
+        //1. 해당 유저가 있는지 조회
         User user = userRepository.findByUsernameAndPassword(loginDTO.getUsername(), loginDTO.getPassword())
                 .orElseThrow(() -> new Exception401("인증되지 않았습니다"));
-        return user;
+        //2. 조회가 되면 세션에 넣었지만 지금은 제이슨 웹토큰을 만들면 된다, 응답까지
+        String accessToken = JwtUtil.create(user);
+        return accessToken;
     }
 
     @Transactional
