@@ -40,7 +40,7 @@ public class BoardController {
     }
 
 
-    @PostMapping("/api/board/{id}/delete")
+    @DeleteMapping("/api/board/{id}")
     public String removeBoard(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         boardService.게시글삭제하기(id, sessionUser);
@@ -48,28 +48,29 @@ public class BoardController {
     }
 
 
-    @GetMapping("/api/board/save-form")
-    public String saveForm() {
-        return "board/save-form";
-    }
+//    @GetMapping("/api/board/save-form")
+//    public String saveForm() {
+//        return "board/save-form";
+//    }
 
 
-    @PostMapping("/api/board/save")
-    public String save(@Valid BoardRequest.SaveDTO saveDTO, Errors errors) {
+    @PostMapping("/api/board")
+    public ResponseEntity<?> save(@Valid @RequestBody BoardRequest.SaveDTO saveDTO, Errors errors) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
-        boardService.게시글쓰기(saveDTO, sessionUser);
+        BoardResponse.DTO model = boardService.게시글쓰기(saveDTO, sessionUser);
 
-        return "redirect:/";
+        return ResponseEntity.ok(Resp.ok(model));
     }
 
-    @GetMapping("/api/board/{id}/update-form")
-    public String updateForm(@PathVariable("id") int id, HttpServletRequest request) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        BoardResponse.DTO model = boardService.게시글수정화면(id, sessionUser);
-        request.setAttribute("model", model);
-        return "board/update-form";
-    }
+    //프론트가 알아서 만드는 거니까 화면 없는 서버라 지움
+//    @GetMapping("/api/board/{id}/update-form")
+//    public String updateForm(@PathVariable("id") int id, HttpServletRequest request) {
+//        User sessionUser = (User) session.getAttribute("sessionUser");
+//        BoardResponse.DTO model = boardService.게시글수정화면(id, sessionUser);
+//        request.setAttribute("model", model);
+//        return "board/update-form";
+//    }
 
     @PostMapping("/api/board/{id}/update")
     public String update(@PathVariable("id") int id, @Valid BoardRequest.UpdateDTO updateDTO, Errors errors) {
@@ -78,6 +79,7 @@ public class BoardController {
         return "redirect:/board/" + id;
     }
 
+    //이것도 화면이 아닌 데이터를 줘야한다
     @GetMapping("/board/{id}")
     public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");

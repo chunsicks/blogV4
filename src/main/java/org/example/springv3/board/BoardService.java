@@ -45,10 +45,12 @@ public class BoardService {
 
 
     @Transactional
-    public void 게시글쓰기(BoardRequest.SaveDTO saveDTO, User sessionUser) {
+    public BoardResponse.DTO 게시글쓰기(BoardRequest.SaveDTO saveDTO, User sessionUser) {
 
         Board boardEntity = saveDTO.toEntity(sessionUser);
-        boardRepository.save(boardEntity);
+        Board boardPS = boardRepository.save(boardEntity);
+        //이거를 DTO로 바꿔야 한다 이대로 가면 터진다
+        return new BoardResponse.DTO(boardPS);
     }
 
     public BoardResponse.DTO 게시글수정화면(int id, User sessionUser) {

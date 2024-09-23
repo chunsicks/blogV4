@@ -16,7 +16,8 @@ public class JwtUtilTest {
     // 테스트됨  만약 시크릿 값을 바꾼다면 metacode로 바꾼다면 오류남! 여기의 시크릿 코드값은 metacoding이니까
     @Test
     public void verify_test(){
-        String accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiLrsJTrs7QiLCJpZCI6MSwiZXhwIjoxNzI3NDAxMDc4fQ.1Ajxs0WTdg40m1CNloFCty1adboo5FpE7qMS0-IfICKFO10xO0u_0dn5R-Cfb9kNdramh15HxGg4kyC7cadJfw";
+        //String accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiLrsJTrs7QiLCJpZCI6MSwiZXhwIjoxNzI3NDAxMDc4fQ.1Ajxs0WTdg40m1CNloFCty1adboo5FpE7qMS0-IfICKFO10xO0u_0dn5R-Cfb9kNdramh15HxGg4kyC7cadJfw";
+        String accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiLrsJTrs7QiLCJpZCI6MSwiZXhwIjoxNzI3NjcyMjMxLCJ1c2VybmFtZSI6InNzYXIifQ.XfEjyytp9QxnbVzzF2liBqLIusDdrSJpGfITmcVx_0-HBvMb7v1PtR-4yQKZHtXU44svv5cyGIpbIyQ584IV1A";
         User user = JwtUtil.verify(accessToken);
         System.out.println(user.getId());
         System.out.println(user.getUsername());
